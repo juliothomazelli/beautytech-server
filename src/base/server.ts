@@ -17,6 +17,7 @@ export class Server {
 
     private constructor(){
       this.app    = express();
+      // teste
       this.server = http.createServer(this.app);
     }
 
