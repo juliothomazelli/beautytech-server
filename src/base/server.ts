@@ -17,7 +17,6 @@ export class Server {
 
     private constructor(){
       this.app    = express();
-      // teste
       this.server = http.createServer(this.app);
     }
 
@@ -54,4 +53,11 @@ export class Server {
     public getExpressApp () : express.Application{
         return this.app;
     }
+}
+
+export enum HttpMethodsTypes {
+  GET   = 'GET',
+  POST  = 'POST',
+  PUT   = 'PUT',
+  PATCH = 'PATCH'
 }
