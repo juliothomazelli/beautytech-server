@@ -8,7 +8,7 @@ import { UserIO } from '../io/user.io';
  
 export class UserMiddleware implements Middleware {
   public use(@Response() response, @Request() request, next: NextFunction): void {
-    this.validationCommon(response, request);
+    // this.validationCommon(response, request);
     next();
   }
   
@@ -61,10 +61,6 @@ export class UserMiddleware implements Middleware {
   private objectRequestIsValid(body) : UserIO{
     if(ObjectUtils.isNullOrUndefined(body)){
       return null;
-    }
-
-    if (!body.hasOwnProperty('Name') || body[] == undefined){
-
     }
   }
 

@@ -4,6 +4,7 @@ import { attachControllers } from '@decorators/express';
 import { UserAction } from '../actions/user.action';
 import { SequelizeORM } from "../sequelize/sequelize";
 import { CompanyAction } from "../actions/company.action";
+import { LoginAction } from "../actions/login.action";
 
 
 var cors = require('cors');
@@ -36,7 +37,7 @@ export class Server {
         this.app.use(cors({maxAge : 86400}));
         this.app.use(bodyParser.json());
 
-        attachControllers(this.app, [UserAction, CompanyAction]);           
+        attachControllers(this.app, [UserAction, CompanyAction, LoginAction]);           
 
         SequelizeORM.getInstance().createORM();
         // DatabaseConnection.getInstance().connect();

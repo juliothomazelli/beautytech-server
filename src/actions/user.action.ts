@@ -1,13 +1,13 @@
-import { PrivateAction } from "./private.action";
 import { Response, Params, Controller, Get, attachControllers, Middleware, Post, Request, Patch, Put} from '@decorators/express';
 import { UserMiddleware } from '../middleware/user.middleware';
 import { ObjectUtils } from "../utils/ObjectUtils";
 import { User } from "../model/user.model";
 import { UIID } from "../utils/Uiid";
 import { StringUtils } from "../utils/StringUtils";
+import { PrivateMiddleware } from '../middleware/private.middleware';
 
-@Controller('/user', null, [UserMiddleware])
-export class UserAction extends PrivateAction {
+@Controller('/user', null, [PrivateMiddleware, UserMiddleware])
+export class UserAction {
 
   @Get('/')
   public async Load(@Response() response, @Request() request){

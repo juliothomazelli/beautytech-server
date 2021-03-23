@@ -10,9 +10,6 @@ export class User extends Model {
   @Column(DataType.STRING(100))
   Name: string;
 
-  @Column(DataType.STRING(20))
-  Username: string;
-
   @Column
   Status: number;
 
