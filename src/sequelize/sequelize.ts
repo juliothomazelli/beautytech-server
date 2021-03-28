@@ -1,7 +1,11 @@
 import { Sequelize } from "sequelize-typescript";
 import { DataBaseConfig } from "../database/database.config";
 import { Company } from "../model/company.model";
+import { Notification } from "../model/notification.model";
+import { Schedule } from "../model/schedule.model";
+import { Service } from "../model/service.model";
 import { User } from "../model/user.model";
+import { UserPermission } from "../model/userpermission.model";
 
 export class SequelizeORM {
   private static instance : SequelizeORM;
@@ -11,7 +15,7 @@ export class SequelizeORM {
     this.sequelize = new Sequelize(DataBaseConfig.getDataBase(), DataBaseConfig.getUserName(), DataBaseConfig.getPassword(), {
       host: DataBaseConfig.getHost(),
       dialect: 'mysql',
-      models: [User, Company],
+      models: [User, Company, Notification, Schedule, Service, UserPermission],
       define:{
         freezeTableName: true
       }

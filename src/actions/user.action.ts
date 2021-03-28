@@ -5,6 +5,7 @@ import { User } from "../model/user.model";
 import { UIID } from "../utils/Uiid";
 import { StringUtils } from "../utils/StringUtils";
 import { PrivateMiddleware } from '../middleware/private.middleware';
+import { PasswordHashUtils } from '../utils/PasswordHashUtils';
 
 @Controller('/user', null, [PrivateMiddleware, UserMiddleware])
 export class UserAction {
@@ -36,7 +37,7 @@ export class UserAction {
 
     user.Key      = UIID.generate()           ;
     user.Name     = response.req.body.Name    ;
-    user.Password = response.req.body.Password;
+    user.Password = PasswordHashUtils.ToHash(response.req.body.Password);
     user.Id       = response.req.body.Id      ;
     user.Phone    = response.req.body.Phone   ;
     user.Type     = response.req.body.Type    ;
