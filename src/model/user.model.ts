@@ -7,6 +7,9 @@ export class User extends Model {
   @Column(DataType.STRING(45))
   Key: string;
 
+  @Column(DataType.STRING(45))
+  FkCompany: string;
+
   @Column(DataType.STRING(100))
   Name: string;
 

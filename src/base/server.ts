@@ -7,6 +7,7 @@ import { CompanyAction } from "../actions/company.action";
 import { LoginAction } from "../actions/login.action";
 import { ScheduleAction } from "../actions/schedule.action";
 import { ServiceAction } from "../actions/service.action";
+import { WebSocketUtils } from "../websocket/websocket";
 
 
 var cors = require('cors');
@@ -21,6 +22,8 @@ export class Server {
     private constructor(){
       this.app    = express();
       this.server = http.createServer(this.app);
+
+      WebSocketUtils.getInstance().registerWebSocket();
     }
 
     public static getInstance() : Server{

@@ -42,6 +42,14 @@ export class LoginAction {
       return;
     }
 
-    response.send({token: token});
+    let userResult = {
+      Key: result.Key,
+      Name: result.Name,
+      Type: result.Type,
+      FkCompany: result.FkCompany,
+      Token: token
+    }
+
+    response.send(userResult);
   }
 }
