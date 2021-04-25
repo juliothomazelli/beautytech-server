@@ -1,6 +1,7 @@
 import { Sequelize } from "sequelize-typescript";
 import { DataBaseConfig } from "../database/database.config";
 import { Company } from "../model/company.model";
+import { CompanyGroup } from "../model/companygroup.model";
 import { Message } from "../model/message.model";
 import { MessageItem } from "../model/messageitem.model";
 import { Notification } from "../model/notification.model";
@@ -17,7 +18,7 @@ export class SequelizeORM {
     this.sequelize = new Sequelize(DataBaseConfig.getDataBase(), DataBaseConfig.getUserName(), DataBaseConfig.getPassword(), {
       host: DataBaseConfig.getHost(),
       dialect: 'mysql',
-      models: [User, Company, Notification, Schedule, Service, UserPermission, Message, MessageItem],
+      models: [User, Company, Notification, Schedule, Service, UserPermission, Message, MessageItem, CompanyGroup],
       define:{
         freezeTableName: true
       }

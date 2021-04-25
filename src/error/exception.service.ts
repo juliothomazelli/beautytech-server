@@ -32,7 +32,8 @@ export class ExceptionService {
     errorCodes.push({error: ExceptionErrorTypes.E_0004, message: 'User not found.',                        adittionalInfo: ''});
     errorCodes.push({error: ExceptionErrorTypes.E_0005, message: 'Problem when realizing authentication.', adittionalInfo: ''});
     errorCodes.push({error: ExceptionErrorTypes.E_0006, message: 'Authentication token invalid.',          adittionalInfo: ''});
-    errorCodes.push({error: ExceptionErrorTypes.E_0007, message: 'Inserting service List.',                adittionalInfo: ''});
+    errorCodes.push({error: ExceptionErrorTypes.E_0007, message: 'Service action.',                        adittionalInfo: ''});
+    errorCodes.push({error: ExceptionErrorTypes.E_0008, message: 'Schedule action.',                       adittionalInfo: ''});
 
     return errorCodes;
   }

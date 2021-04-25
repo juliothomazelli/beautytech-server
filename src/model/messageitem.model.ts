@@ -10,7 +10,7 @@ export class MessageItem extends Model{
   @Column(DataType.STRING(45))
   FkMessage: string;
 
-  @Column(DataType.STRING(20))
+  @Column(DataType.STRING(1000))
   Message: string;
 
   @Column(DataType.DATE)

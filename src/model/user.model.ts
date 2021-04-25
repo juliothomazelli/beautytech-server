@@ -16,7 +16,7 @@ export class User extends Model {
   @Column
   Status: number;
 
-  @Column
+  @Column  //? 1 - ADMIN / 2 - CLIENTE
   Type: number;
 
   @Column

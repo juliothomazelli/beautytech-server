@@ -35,14 +35,15 @@ export class UserAction {
 
     let user = new User();
 
-    user.Key      = UIID.generate()           ;
-    user.Name     = response.req.body.Name    ;
-    user.Password = PasswordHashUtils.ToHash(response.req.body.Password);
-    user.Id       = response.req.body.Id      ;
-    user.Phone    = response.req.body.Phone   ;
-    user.Type     = response.req.body.Type    ;
-    user.Email    = response.req.body.Email   ;
-    user.Status   = 1                         ;
+    user.Key       = UIID.generate()            ;
+    user.Name      = response.req.body.Name     ;
+    user.Password  = PasswordHashUtils.ToHash(response.req.body.Password);
+    user.Id        = response.req.body.Id       ;
+    user.Phone     = response.req.body.Phone    ;
+    user.Type      = response.req.body.Type     ;
+    user.Email     = response.req.body.Email    ;
+    user.FkCompany = response.req.body.FkCompany;
+    user.Status    = 1                          ;
 
     await user.save();
 

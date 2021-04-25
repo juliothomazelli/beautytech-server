@@ -12,13 +12,16 @@ export class Service extends Model{
   FkCompany: string;
 
   @Column(DataType.STRING(45))
-  FkUser: string;
-
-  @Column(DataType.STRING(45))
   Name: string;
 
   @Column(DataType.STRING(100))
   Note: string;
+
+  @Column(DataType.DECIMAL(10, 2))
+  Price: number;
+
+  @Column(DataType.STRING(20))
+  Icon_Name: string;
 
   @Column
   Enabled: number;

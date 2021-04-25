@@ -7,6 +7,9 @@ export class Company extends Model{
   @Column(DataType.STRING(45))
   Key: string;
 
+  @Column(DataType.STRING(45))
+  FkCompanyGroup: string;
+
   @Column(DataType.STRING(100))
   Fantasy_Name: string;
 

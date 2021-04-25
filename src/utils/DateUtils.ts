@@ -23,7 +23,7 @@ export class DateUtils {
     return '0' + hourMinuteSecond;
   }
 
-  private static getMonth(month : number){
+  public static getMonth(month : number){
     if (month == 0){
       return '01';
     }
@@ -71,5 +71,9 @@ export class DateUtils {
     if (month == 11){
       return '12';
     }
+  }
+
+  public static getNumberDaysOfMonth(date : Date){
+    return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
   }
 }

@@ -1,7 +1,12 @@
 import WebSocket from 'ws';
-import { MessageBO, MessageTypes } from '../bo/message.bo';
+import { ChatMessageBO } from '../bo/chatmessage.bo';
 import { Message } from '../model/message.model';
 import { ObjectUtils } from '../utils/ObjectUtils';
+
+export enum MessageTypes {
+  LOAD_MESSAGES = 'LOAD_MESSAGES',
+  NEW_MESSAGE   = 'NEW_MESSAGE'
+}
 
 export class WebSocketUtils{
   private static instance : WebSocketUtils;
@@ -24,7 +29,7 @@ export class WebSocketUtils{
         Messages : []
       }
 
-      new MessageBO().loadMessages(client.Key, client.FkCompany).then((response) => {
+      new ChatMessageBO().loadMessages(client.Key, client.FkCompany).then((response) => {
         if (ObjectUtils.isNullOrUndefined(response)){
           return;
         }
@@ -37,7 +42,34 @@ export class WebSocketUtils{
       });
       
       ws.on('message', (message) => {
-        
+        let messageResult = JSON.parse(message.toString());
+
+        if (messageResult.Type == MessageTypes.NEW_MESSAGE){
+          new ChatMessageBO().saveMessages(messageResult).then((response : any) => {
+            let resultSend_by = {
+              Type: MessageTypes.NEW_MESSAGE,
+              Message: response.Send_by
+            }
+
+            ws.send(JSON.stringify(resultSend_by));
+
+            for (const client of this.clients){
+              if (client.Key !== response.FkUser_Contact){
+                continue;
+              }
+
+              let resultUserContact = {
+                Type: MessageTypes.NEW_MESSAGE,
+                Message: response.User_Contact
+              }
+
+              client.Ws.send(JSON.stringify(resultUserContact));
+            }
+
+          }).catch((error) => {
+            ws.close(error);
+          });
+        }
       });
     
       ws.on('open', (message: WebSocket.Data) => {
