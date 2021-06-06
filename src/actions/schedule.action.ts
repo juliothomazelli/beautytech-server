@@ -9,7 +9,6 @@ import { BooleanUtils } from "../utils/BooleanUtils";
 import { ObjectUtils } from "../utils/ObjectUtils";
 import { StringUtils } from "../utils/StringUtils";
 import { UIID } from "../utils/Uiid";
-import { ScheduleBO } from "../bo/schedule.bo";
 
 @Controller('/schedule', null, [PrivateMiddleware])
 export class ScheduleAction {
@@ -32,18 +31,6 @@ export class ScheduleAction {
     }
 
     response.send(result);
-  }
-
-  @Get('/month/days')
-  public async LoadMonthDays(@Response() response, @Request() request){
-    if (ObjectUtils.isNullOrUndefined(response.req.body)){
-      ExceptionService.CreateAPIException(ExceptionErrorTypes.E_0008, true, response);
-      return;
-    }
-
-    let scheduleBO = new ScheduleBO(response.req.query.fkcompany, response.req.query.month, response.req.query.year);
-
-    response.send(scheduleBO.LoadDaysOfMonth());
   }
 
   @Post('/')
