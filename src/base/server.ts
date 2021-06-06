@@ -39,7 +39,7 @@ export class Server {
     }
 
     private async prepareExpressApp() {
-        this.app.use(cors({maxAge : 86400}));
+        this.app.use(cors({maxAge : 86400}));c
         this.app.use(bodyParser.json());
 
         attachControllers(this.app, [UserAction, CompanyAction, LoginAction, ScheduleAction, ServiceAction]);           
