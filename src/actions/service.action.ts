@@ -1,12 +1,11 @@
 import { Controller, Get, Response, Request, Post, Patch, Put } from "@decorators/express";
-import { response } from "express";
+import { QueryTypes } from "sequelize";
 import { ExceptionErrorTypes, ExceptionService } from "../error/exception.service";
 import { PrivateMiddleware } from "../middleware/private.middleware";
-import { PublicMiddleware } from "../middleware/public.middleware";
 import { Service } from "../model/service.model";
+import { SequelizeORM } from "../sequelize/sequelize";
 import { BooleanUtils } from "../utils/BooleanUtils";
 import { ObjectUtils } from "../utils/ObjectUtils";
-import { SQLQueryUtils } from "../utils/SQLQueryUtils";
 import { StringUtils } from "../utils/StringUtils";
 import { UIID } from "../utils/Uiid";
 
@@ -29,13 +28,38 @@ export class ServiceAction {
     response.send(result);
   }
 
+  @Get('/user')
+  public async LoadListByUser(@Response() response, @Request() request) {
+    if (ObjectUtils.isNullOrUndefined(response.req.query.fkuser)) {
+      response.send();
+      return;
+    }
+
+    let select = `                        
+                  SELECT  S.Key,
+                          S.FkCompany,
+                          S.Name,
+                          S.Note,
+                          S.Price,
+                          S.Icon_Name,
+                          S.Enabled,
+                          S.Status
+                  FROM SERVICE S
+                  INNER JOIN USER U ON U.Key   = ?
+                                    AND U.Type = 0`
+
+    let services : any = await SequelizeORM.getInstance().getSequelizeORM().query(select, {replacements: [response.req.query.fkuser], type: QueryTypes.SELECT});
+
+    response.send(services);
+  }
+
   @Get('/key')
   public async Load(@Response() response, @Request() request){
     if (ObjectUtils.isNullOrUndefined(response.req.query.key)) {
       response.send();
       return;
     }
-
+    
     let service : any = {};
 
     service.Key    = response.req.query.key;

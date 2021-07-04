@@ -16,13 +16,13 @@ export class User extends Model {
   @Column
   Status: number;
 
-  @Column  //? 1 - ADMIN / 2 - CLIENTE
+  @Column
   Type: number;
 
   @Column
   Id: number;
 
-  @Column(DataType.STRING(20))
+  @Column(DataType.STRING(100))
   Password: string;
 
   @Column(DataType.STRING(20))
@@ -30,4 +30,10 @@ export class User extends Model {
 
   @Column(DataType.STRING(45))
   Email: string;
+}
+
+export enum UserType{
+  ADMIN,
+  USER,
+  FINAL_USER
 }

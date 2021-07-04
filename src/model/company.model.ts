@@ -36,4 +36,7 @@ export class Company extends Model{
 
   @Column(DataType.STRING(45))
   Zipcode: string;
+
+  @Column(DataType.STRING(45))
+  Domain: string;
 }
