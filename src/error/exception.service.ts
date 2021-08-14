@@ -34,6 +34,8 @@ export class ExceptionService {
     errorCodes.push({error: ExceptionErrorTypes.E_0006, message: 'Authentication token invalid.',          adittionalInfo: ''});
     errorCodes.push({error: ExceptionErrorTypes.E_0007, message: 'Service action.',                        adittionalInfo: ''});
     errorCodes.push({error: ExceptionErrorTypes.E_0008, message: 'Schedule action.',                       adittionalInfo: ''});
+    errorCodes.push({error: ExceptionErrorTypes.E_0009, message: 'Wrong Username or Password.',            adittionalInfo: ''});
+    errorCodes.push({error: ExceptionErrorTypes.E_0010, message: 'LoadDaySchedule is invalid.',            adittionalInfo: ''});
 
     return errorCodes;
   }

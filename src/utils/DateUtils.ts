@@ -1,16 +1,21 @@
 import { ObjectUtils } from "./ObjectUtils";
 
 export class DateUtils {
-  public static formatDateTime(date : Date){
+  public static formatDateTime(date : Date, initialDate = true){
     if (ObjectUtils.isNullOrUndefined(date)){
       return '';
     }
 
     let result = '';
     
-    result = date.getFullYear() + '-' + DateUtils.getMonth(date.getMonth()) + '-' + date.getDate() + ' ';
+    result = date.getFullYear() + '-' + DateUtils.getMonth(date.getMonth()) + '-' + DateUtils.formatZeronumber(date.getDate().toString()) + ' ';
 
-    result += DateUtils.formatZeronumber(date.getHours().toString()) + ':' + DateUtils.formatZeronumber(date.getMinutes().toString()) + ':' + DateUtils.formatZeronumber(date.getSeconds().toString());
+    if (initialDate){
+      result += DateUtils.formatZeronumber(date.getHours().toString()) + ':' + DateUtils.formatZeronumber(date.getMinutes().toString()) + ':' + DateUtils.formatZeronumber(date.getSeconds().toString());
+    } else {
+      result += '23:59:59';
+    }
+    
 
     return result;
   }

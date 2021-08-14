@@ -18,46 +18,11 @@ export class LoginAction {
   public async Login(@Response() response, @Request() request){
     let loginBO = new LoginBO(response, request);
 
-    let result = loginBO.login();
+    return loginBO.login();
+    
+    
 
-    // let domain = response.req.body.Email.substring(response.req.body.Email.indexOf('@') + 1, response.req.body.Email.length);
-
-    // let select = `SELECT  C.Key,
-    //                       C.FkCompanyGroup,
-    //                               C.Fantasy_Name,
-    //                               C.Company_Name,
-    //                               C.Phone,
-    //                               C.Address,
-    //                               C.City,
-    //                               C.District,
-    //                               C.Is_Open,
-    //                               C.Status,
-    //                               C.ZipCode,
-    //                               C.Domain,
-    //                               CG.Key as CompanyGroupKey,
-    //                               CG.Name as CompanyGroupName,
-    //                               CG.Status as CompanyGroupStatus
-    //                   from company C
-    //                   inner join companygroup CG on CG.Key = C.FkCompanyGroup
-    //                   where C.Domain = ? `;
-
-    // let sessionInfo : any = await SequelizeORM.getInstance().getSequelizeORM().query(select, {replacements: [domain], type: QueryTypes.SELECT});
-    // let user : any = {};
-
-    // user.Email    = response.req.body.Email        ;
-    // user.Status   = BooleanUtils.booleanToInt(true);
-
-    // let result = await User.findOne({where: user, raw: true});
-
-    // if (ObjectUtils.isNullOrUndefined(result)){
-    //   response.status(404).send({error: '0004', message: 'User not found.'});
-    //   return;
-    // }
-
-    // if (!PasswordHashUtils.IsValid(response.req.body.Password, result.Password)){
-    //   response.status(404).send({error: '0006', message: 'Email or Password incorrect.'});
-    //   return;
-    // }
+    
 
     // let token = '';
 

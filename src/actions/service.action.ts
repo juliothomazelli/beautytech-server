@@ -28,31 +28,6 @@ export class ServiceAction {
     response.send(result);
   }
 
-  @Get('/user')
-  public async LoadListByUser(@Response() response, @Request() request) {
-    if (ObjectUtils.isNullOrUndefined(response.req.query.fkuser)) {
-      response.send();
-      return;
-    }
-
-    let select = `                        
-                  SELECT  S.Key,
-                          S.FkCompany,
-                          S.Name,
-                          S.Note,
-                          S.Price,
-                          S.Icon_Name,
-                          S.Enabled,
-                          S.Status
-                  FROM SERVICE S
-                  INNER JOIN USER U ON U.Key   = ?
-                                    AND U.Type = 0`
-
-    let services : any = await SequelizeORM.getInstance().getSequelizeORM().query(select, {replacements: [response.req.query.fkuser], type: QueryTypes.SELECT});
-
-    response.send(services);
-  }
-
   @Get('/key')
   public async Load(@Response() response, @Request() request){
     if (ObjectUtils.isNullOrUndefined(response.req.query.key)) {

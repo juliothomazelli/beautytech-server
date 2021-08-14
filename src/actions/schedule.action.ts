@@ -6,93 +6,51 @@ import { PrivateMiddleware } from "../middleware/private.middleware";
 import { Schedule } from "../model/schedule.model";
 import { SequelizeORM } from "../sequelize/sequelize";
 import { BooleanUtils } from "../utils/BooleanUtils";
+import { DateUtils } from "../utils/DateUtils";
 import { ObjectUtils } from "../utils/ObjectUtils";
 import { StringUtils } from "../utils/StringUtils";
 import { UIID } from "../utils/Uiid";
 
 @Controller('/schedule', null, [PrivateMiddleware])
 export class ScheduleAction {
-  @Get('/key')
-  public async LoadByKey(@Response() response, @Request() request){
-    if (ObjectUtils.isNullOrUndefined(response.req.query.key) || StringUtils.isEmpty(response.req.query.key)){
-      ExceptionService.CreateAPIException(ExceptionErrorTypes.E_0008, true, response);
-      return;
+  @Post('/load')
+  public async LoadDaySchedule(@Response() response, @Request() request){
+    let select = `select  s.Key,
+                          s.Description,
+                          s.FkCompany,
+                          s.FkUser_Scheduled_By,
+                          s.FkCustomer,
+                          s.FkService,
+                          s.Scheduled_Date,
+                          s.Note,
+                          s.Status
+                  from schedule s
+                  where s.fkcompany = ?
+                    and s.Scheduled_Date between ? and ?
+                    and s.Status = 1 
+                  order by s.Scheduled_Date `;
+
+    let initialDate = DateUtils.formatDateTime(new Date(response.req.body.schedule.atomicDay));
+    let finalDate   = DateUtils.formatDateTime(new Date(response.req.body.schedule.atomicDay), false);
+
+    let schedules : any = await SequelizeORM.getInstance().getSequelizeORM().query(select, {replacements: [response.req.body.fkcompany, initialDate, finalDate], type: QueryTypes.SELECT});
+
+    if (ObjectUtils.isNullOrUndefined(schedules)){
+      return ExceptionService.CreateAPIException(ExceptionErrorTypes.E_0010, true, response);
     }
 
-    let schedule : any = {};
+    let result = response.req.body.schedule;
 
-    schedule.Key    = response.req.query.key;
-    schedule.Status = BooleanUtils.TRUE     ;
+    for (const item of result.hourList){
+      for (const schedule of schedules){
+        if (item.hour != DateUtils.formatDateTime(schedule.Scheduled_Date).substring(11, 16)){
+          continue;
+        }
 
-    let result : any = await Schedule.findOne({where: schedule, raw: true});
-
-    if (ObjectUtils.isNullOrUndefined(result)){
-      result = [];
+        item.serviceList.push(schedule);
+      }
     }
 
-    response.send(result);
-  }
-
-  @Post('/')
-  public async Save(@Response() response, @Request() request){
-    if (ObjectUtils.isNullOrUndefined(response.req.body)){
-      ExceptionService.CreateAPIException(ExceptionErrorTypes.E_0008, true, response);
-      return;
-    }
-
-    ObjectUtils.verifyProperty(response.req.body, 'Note', '');
-    ObjectUtils.verifyProperty(response.req.body, 'FkCustomer', '');
-    ObjectUtils.verifyProperty(response.req.body, 'FkService', '');
-
-    let schedule = new Schedule();
-
-    schedule.Key            = UIID.generate()                 ;
-    schedule.Note           = response.req.body.Note          ;
-    schedule.Description    = response.req.body.Description   ;
-    schedule.Status         = BooleanUtils.TRUE               ;
-    schedule.Scheduled_Date = response.req.body.Scheduled_Date;
-    schedule.FkCompany      = response.req.body.FkCompany     ;
-    schedule.FkCustomer     = response.req.body.FkCustomer    ;
-    schedule.FkService      = response.req.body.FkService     ;
-
-    await schedule.save();
-
-    let result = await Schedule.findOne({where: {Key: schedule.Key}});
-
-    response.send(result);
-  }
-
-  @Put('/')
-  public async Update(@Response() response, @Request() request){
-    if (ObjectUtils.isNullOrUndefined(response.req.body) || (StringUtils.isEmpty(response.req.body.Key))){
-      return;
-    }
-
-    let schedule : any = {};
-
-    schedule.Key            = response.req.body.Key           ;
-    schedule.Note           = response.req.body.Note          ;
-    schedule.Description    = response.req.body.Description   ;
-    schedule.Scheduled_Date = response.req.body.Scheduled_Date;
-    schedule.FkCompany      = response.req.body.FkCompany     ;
-    schedule.FkCustomer     = response.req.body.FkCustomer    ;
-    schedule.FkService      = response.req.body.FkService     ;
-    
-    await Schedule.update(schedule, {where: {Key: response.req.body.Key, Status: 1}});
-
-    let result = await Schedule.findOne({where: {Key: response.req.body.Key}, raw: true});
-
-    response.send(result);
-  }
-
-  @Patch('/')
-  public async Delete(@Response() response, @Request() request){
-    if (ObjectUtils.isNullOrUndefined(response.req.body)){
-      return;
-    }
-
-    await Schedule.update({Status: 2}, {where: {Key: response.req.body.Key}});
-
-    response.send({Key: response.req.body.Key});
+    return response.send(result);
   }
 }
